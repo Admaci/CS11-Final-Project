@@ -1,3 +1,4 @@
+// Author: Adam Maciaszek
 #ifndef BLACKJACK__H
 #define BLACKJACK__H
 
@@ -20,15 +21,27 @@ class Blackjack {
         bool Stand();
         bool gameover();
 
-        int Get_Value();
+        int Get_Value(std::string player_card, int &ace_count);
+        int winner();
 
         std::string Draw_Card();
+        std::string to_lower(std::string &input);
+        int Hand_Value(std::vector<std::string> player_deck, int player_value, int ace_count);
 
 
     private:
         int value;
+        int position;
+        int player_value;
+        int dealer_value;
+        int player_ace;
+        int dealer_ace;
+
         bool has_ace;
-        std::vector<std::string> player_deck;
+
+        std::string player_card;
+        std::string result;
+        
         std::vector<std::string> Deck;
         std::vector<std::string> Player;
         std::vector<std::string> Dealer;
