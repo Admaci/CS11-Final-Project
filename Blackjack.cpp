@@ -64,7 +64,21 @@ int Blackjack::Get_Value(std::string player_card, int &ace_count){
     if (player_rank == "J"){return 10;}
     if (player_rank == "T"){return 10;}
     return stoi(player_rank);
+}
 
+
+
+int Blackjack::Hand_Value(std::vector<std::string> player_deck, int player_value, int ace_count){
+    player_value = 0;
+    ace_count = 0;
+    for (int i = 0; i < player_deck.size(); i++){
+        player_value += Get_Value(player_deck[i], ace_count);
+    }
+    while (ace_count > 0 && player_value > 21){
+        player_value -= 10;
+        ace_count--;
+    }
+    return player_value;
 }
 
 int Blackjack::winner(){
@@ -75,17 +89,6 @@ int Blackjack::winner(){
         return 2;
     }
     return 0;
-}
-
-int Blackjack::Hand_Value(std::vector<std::string> player_deck, int player_value, int ace_count){
-    player_value = 0;
-    for (int i = 0; i < player_deck.size(); i++){
-        player_value += Get_Value(player_deck[i], ace_count);
-    }
-    if (ace_count > 0 && player_value > 21){
-        player_value -= 10 * ace_count ;
-    }
-    return player_value;
 }
 
 bool Blackjack::gameover(){
@@ -140,10 +143,10 @@ void Blackjack::play(){
             for (int i = 0; i < Player.size(); ++i){
                 std::cout << Player[i] << "\t";
             }
-            player_value = 0; // reset the value everytime it is run
-            for (int i = 0; i < Player.size(); i++){
-                player_value += Get_Value(Player[i]);
-            }
+            // player_value = 0; // reset the value everytime it is run
+            // for (int i = 0; i < Player.size(); i++){
+            //     player_value += Get_Value(Player[i]);
+            // }
 
             Hand_Value(Player, player_value, player_ace);
 
@@ -161,13 +164,13 @@ void Blackjack::play(){
                 stand = true;
             }
         }
-        while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
-            dealer_value = 0; // reset the value everytime it is run
-            for (int i = 0; i < Dealer.size(); i++){
-                    dealer_value += Get_Value(Dealer[i]);
-            }
-            Dealer.push_back(Draw_Card());
-        }
+        // while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
+        //     dealer_value = 0; // reset the value everytime it is run
+        //     for (int i = 0; i < Dealer.size(); i++){
+        //             dealer_value += Get_Value(Dealer[i]);
+        //     }
+        //     Dealer.push_back(Draw_Card());
+        // }
         std::cout << "Dealer value: " << dealer_value << std::endl;
         std::cout << "Dealer hand: ";
         for (int i = 0; i < Dealer.size(); ++i){
@@ -188,8 +191,8 @@ void Blackjack::play(){
     }
 }
 
-// int main(){
-//     Blackjack Game;
-//     Game.play();
-//     return 0;
-// }
+int main(){
+    Blackjack Game;
+    Game.play();
+    return 0;
+}
