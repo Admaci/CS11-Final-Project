@@ -26,7 +26,7 @@ class Blackjack {
 
         std::string Draw_Card();
         std::string to_lower(std::string &input);
-        int Hand_Value(std::vector<std::string> player_deck, int player_value, int ace_count);
+        void Hand_Value(std::vector<std::string> player_deck, int &player_value, int ace_count);
 
 
     private:
