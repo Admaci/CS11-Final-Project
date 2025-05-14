@@ -81,13 +81,14 @@ void Blackjack::Hand_Value(std::vector<std::string> player_deck, int &player_val
 }
 
 int Blackjack::winner(){
+
     if ((player_value > dealer_value) && player_value < 22){
         return 1;
     }
-    if ((player_value == 21) && Player.size() == 2){
+    if (player_value == 21 && Player.size() == 2){
         return 1;
     }
-    if ((dealer_value == 21) && Dealer.size() == 2){
+    if (dealer_value == 21 && Dealer.size() == 2){
         return 2;
     }
     if ((dealer_value > player_value) && dealer_value < 22){
@@ -106,11 +107,11 @@ bool Blackjack::gameover(){
         return true;
     }
     if ((dealer_value >= 21) || (player_value >= 21)){
-        std::cout << "gameover" << std::endl;
+        std::cout << "gameover 1" << std::endl;
         return true;
     }
     if (winner() == 1 || winner() == 2){
-        std::cout << "gameover" << std::endl;
+        std::cout << "gameover 2" << std::endl;
         return true;
     }
     return false;
@@ -153,8 +154,6 @@ void Blackjack::play(){
             }
 
             Hand_Value(Player, player_value, player_ace);
-            gameover();
-            winner();
 
             std::cout << std::endl << "Hand value: " << player_value << std::endl;
 
