@@ -11,6 +11,9 @@ Blackjack::Blackjack(){
     player_value = 0;
     player_ace = 0;
     dealer_ace = 0;
+    full = false;
+    win = 0;
+    loss = 0;
 }
 
 // creates a 52 card deck by combining suits and ranks
@@ -82,24 +85,25 @@ void Blackjack::Hand_Value(std::vector<std::string> player_deck, int &player_val
 
 int Blackjack::winner(){
 
-    if ((player_value > dealer_value) && player_value < 22){
-        return 1;
-    }
+    // if ((player_value > dealer_value) && player_value < 22){
+    //     return 1;
+    // }
     if (player_value == 21 && Player.size() == 2){
         return 1;
     }
     if (dealer_value == 21 && Dealer.size() == 2){
         return 2;
     }
-    if ((dealer_value > player_value) && dealer_value < 22){
-        return 2;
-    }
+    // if ((dealer_value > player_value) && dealer_value < 22){
+    //     return 2;
+    // }
     return 0;
 }
 
 bool Blackjack::gameover(){
     if (player_value == 21 && Player.size() == 2){
         std::cout << "Blackjack!" << std::endl;
+        winner();
         return true;
     }
     if (dealer_value == 21 && Dealer.size() == 2){
@@ -128,6 +132,21 @@ std::string Blackjack::to_lower(std::string &input){
     return input;
 }
 
+void Blackjack::game_history(){
+    std::ifstream fin;
+    fin.open("Game_History.txt");
+    int player_win;
+    int dealer_win;
+    if (winner() == 1){
+        player_win++;
+    }
+    if (winner() == 2){
+        dealer_win++;
+    }
+    std::cout << "Win / Loss = " << player_win << " / " << dealer_win << std::endl;
+    fin.close(); 
+}
+
 
 void Blackjack::play(){
     Create_Deck();
@@ -135,7 +154,6 @@ void Blackjack::play(){
     bool play_again = true;
 
     while (!gameover()){
-        bool full = false;
         while (!full){
             Player.push_back(Draw_Card());
             Dealer.push_back(Draw_Card());
@@ -150,7 +168,7 @@ void Blackjack::play(){
         while (!stand && !gameover()){
             std::cout << "Your hand: ";
             for (int i = 0; i < Player.size(); ++i){
-                std::cout << Player[i] << std::setw(2);
+                std::cout << Player[i] << std::setw(2) << "";
             }
 
             Hand_Value(Player, player_value, player_ace);
@@ -158,7 +176,7 @@ void Blackjack::play(){
             std::cout << std::endl << "Hand value: " << player_value << std::endl;
 
             std::string choice;
-            std::cout << std::endl << "Dealer's card: " << Dealer[0] << Dealer[1];
+            std::cout << std::endl << "Dealer's card: " << Dealer[0];
             std::cout << std::endl << "Would you like to hit or stand?" << std::endl;
             std::cin >> choice;
             to_lower(choice);
@@ -171,17 +189,19 @@ void Blackjack::play(){
         }
         while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
             Hand_Value(Dealer, dealer_value, dealer_ace);
-            }
             Dealer.push_back(Draw_Card());
         }
         std::cout << "Dealer value: " << dealer_value << std::endl;
-        std::cout << "Dealer hand: ";
-        for (int i = 0; i < Dealer.size(); ++i){
-                std::cout << Dealer[i] << "\t";
-        }
+        // std::cout << "Dealer hand: ";
+        // for (int i = 0; i < Dealer.size(); ++i){
+        //         std::cout << Dealer[i] << "\t";
+        // }
+    }
         std::cout << std::endl;
+        game_history();
 
     // std::string play_choice;
+    // to_lower(play_choice);
     // std::cout << "The winner is: " << winner() << std::endl;
     // std::cout << "Would you like to play again? (yes/no) ";
     // std::cin >> play_choice;

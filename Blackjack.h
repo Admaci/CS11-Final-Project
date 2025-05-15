@@ -17,6 +17,7 @@ class Blackjack {
         void Create_Deck();
         void Cards();
         void shuffle();
+        void game_history();
 
         bool Hit();
         bool Stand();
@@ -37,7 +38,10 @@ class Blackjack {
         int dealer_value;
         int player_ace;
         int dealer_ace;
+        int win;
+        int loss;
 
+        bool full;
         bool has_ace;
 
         std::string player_card;
