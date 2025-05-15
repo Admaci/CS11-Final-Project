@@ -147,10 +147,10 @@ void Blackjack::play(){
         Hand_Value(Player, player_value, player_ace);
         Hand_Value(Dealer, dealer_value, dealer_ace);
         bool stand = false;
-        while (!stand){
+        while (!stand && !gameover()){
             std::cout << "Your hand: ";
             for (int i = 0; i < Player.size(); ++i){
-                std::cout << Player[i] << "\t";
+                std::cout << Player[i] << std::setw(2);
             }
 
             Hand_Value(Player, player_value, player_ace);
