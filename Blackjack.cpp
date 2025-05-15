@@ -85,18 +85,18 @@ void Blackjack::Hand_Value(std::vector<std::string> player_deck, int &player_val
 
 int Blackjack::winner(){
 
-    // if ((player_value > dealer_value) && player_value < 22){
-    //     return 1;
-    // }
+    if ((player_value > dealer_value) && player_value < 22){
+        return 1;
+    }
     if (player_value == 21 && Player.size() == 2){
         return 1;
     }
     if (dealer_value == 21 && Dealer.size() == 2){
         return 2;
     }
-    // if ((dealer_value > player_value) && dealer_value < 22){
-    //     return 2;
-    // }
+    if ((dealer_value > player_value) && dealer_value < 22){
+        return 2;
+    }
     return 0;
 }
 
@@ -134,17 +134,19 @@ std::string Blackjack::to_lower(std::string &input){
 
 void Blackjack::game_history(){
     std::ifstream fin;
+    std::ofstream fout;
     fin.open("Game_History.txt");
-    int player_win;
-    int dealer_win;
     if (winner() == 1){
-        player_win++;
+        win++;
     }
     if (winner() == 2){
-        dealer_win++;
+        loss++;
     }
-    std::cout << "Win / Loss = " << player_win << " / " << dealer_win << std::endl;
-    fin.close(); 
+    std::cout << "Win / Loss = " << win << " / " << loss << std::endl;
+    fin.close();
+    fout.open("Game_History.txt");
+    fout << win << std::endl << loss << std::endl;
+    fout.close();
 }
 
 
