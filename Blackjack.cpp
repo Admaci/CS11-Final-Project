@@ -85,16 +85,22 @@ void Blackjack::Hand_Value(std::vector<std::string> player_deck, int &player_val
 
 int Blackjack::winner(){
 
-    if ((player_value > dealer_value) && player_value < 22){
+    if ((player_value > dealer_value) && player_value < 22 && full){
         return 1;
     }
     if (player_value == 21 && Player.size() == 2){
         return 1;
     }
+    if (dealer_value > 21){
+        return 1;
+    }
     if (dealer_value == 21 && Dealer.size() == 2){
         return 2;
     }
-    if ((dealer_value > player_value) && dealer_value < 22){
+    if ((dealer_value > player_value) && dealer_value < 22 && full){
+        return 2;
+    }
+    if (player_value > 21){
         return 2;
     }
     return 0;
@@ -108,10 +114,12 @@ bool Blackjack::gameover(){
     }
     if (dealer_value == 21 && Dealer.size() == 2){
         std::cout << "The dealer got a blackjack!" << std::endl;
+        winner();
         return true;
     }
-    if ((dealer_value >= 21) || (player_value >= 21)){
+    if (dealer_value >= 21 || player_value >= 21){
         std::cout << "gameover 1" << std::endl;
+        winner();
         return true;
     }
     if (winner() == 1 || winner() == 2){
@@ -156,13 +164,9 @@ void Blackjack::play(){
     bool play_again = true;
 
     while (!gameover()){
-        while (!full){
+        for (int i = 0; i < 2; i++){
             Player.push_back(Draw_Card());
             Dealer.push_back(Draw_Card());
-            if (Dealer.size() == 2){
-                full = true;
-            }
-
         }
         Hand_Value(Player, player_value, player_ace);
         Hand_Value(Dealer, dealer_value, dealer_ace);
@@ -193,14 +197,16 @@ void Blackjack::play(){
             Hand_Value(Dealer, dealer_value, dealer_ace);
             Dealer.push_back(Draw_Card());
         }
-        std::cout << "Dealer value: " << dealer_value << std::endl;
+        full = true;
+        
         // std::cout << "Dealer hand: ";
         // for (int i = 0; i < Dealer.size(); ++i){
         //         std::cout << Dealer[i] << "\t";
         // }
     }
-        std::cout << std::endl;
-        game_history();
+    std::cout << "Dealer value: " << dealer_value << std::endl;
+    std::cout << std::endl;
+    game_history();
 
     // std::string play_choice;
     // to_lower(play_choice);
