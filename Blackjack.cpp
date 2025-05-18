@@ -121,9 +121,15 @@ std::string Blackjack::to_lower(std::string &input){
 }
 
 void Blackjack::game_history(){
-    std::ifstream fin;
-    std::ofstream fout;
-    fin.open("Game_History.txt");
+    std::ifstream fin("Game_History.txt");  
+    if (fin){
+        fin >> win >> loss;
+    }
+    fin.close();
+
+    int result = winner();
+    if (result == 1){win++;}
+    if (result == 2){win++;}
     while (fin >> win >> loss){
         if (winner() == 1){
             win++;
@@ -134,7 +140,7 @@ void Blackjack::game_history(){
     }
     std::cout << "Win / Loss = " << win << " / " << loss << std::endl;
     fin.close();
-    fout.open("Game_History.txt");
+    std::ofstream fout("Game_History.txt");
     fout << win << std::endl << loss << std::endl;
     fout.close();
 }
@@ -145,66 +151,45 @@ void Blackjack::play(){
     shuffle();
     bool play_again = true;
 
-    while (!gameover()){
-        for (int i = 0; i < 2; i++){
+    for (int i = 0; i < 2; i++){
+        Player.push_back(Draw_Card());
+        Dealer.push_back(Draw_Card());
+    }
+    Hand_Value(Player, player_value, player_ace);
+    Hand_Value(Dealer, dealer_value, dealer_ace);
+    bool stand = false;
+    while (!stand && !gameover()){
+        std::cout << "Your hand: ";
+        for (int i = 0; i < Player.size(); ++i){
+            std::cout << Player[i] << std::setw(2) << "";
+        }
+
+        std::cout << std::endl << "Hand value: " << player_value << std::endl;
+
+        std::string choice;
+        std::cout << std::endl << "Dealer's card: " << Dealer[0];
+        std::cout << std::endl << "Would you like to hit or stand?" << std::endl;
+        std::cin >> choice;
+        to_lower(choice);
+        if (choice == "hit"){
             Player.push_back(Draw_Card());
+            Hand_Value(Player, player_value, player_ace);
+        }
+        if (choice == "stand"){
+            stand = true;
+        }
+    }
+    if (player_value < 21){//dealer should not draw any cards if the player gets a blackjack or bust
+        while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
             Dealer.push_back(Draw_Card());
+            Hand_Value(Dealer, dealer_value, dealer_ace);
         }
-        Hand_Value(Player, player_value, player_ace);
-        Hand_Value(Dealer, dealer_value, dealer_ace);
-        bool stand = false;
-        while (!stand && !gameover()){
-            std::cout << "Your hand: ";
-            for (int i = 0; i < Player.size(); ++i){
-                std::cout << Player[i] << std::setw(2) << "";
-            }
-
-            std::cout << std::endl << "Hand value: " << player_value << std::endl;
-
-            std::string choice;
-            std::cout << std::endl << "Dealer's card: " << Dealer[0];
-            std::cout << std::endl << "Would you like to hit or stand?" << std::endl;
-            std::cin >> choice;
-            to_lower(choice);
-            if (choice == "hit"){
-                Player.push_back(Draw_Card());
-                Hand_Value(Player, player_value, player_ace);
-            }
-            if (choice == "stand"){
-                stand = true;
-            }
-        }
-        if (player_value < 21){//dealer should not draw any cards if the player gets a blackjack or bust
-            while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
-                Hand_Value(Dealer, dealer_value, dealer_ace);
-                Dealer.push_back(Draw_Card());
-            }
-            full = true;
-        }
-        
-        // std::cout << "Dealer hand: ";
-        // for (int i = 0; i < Dealer.size(); ++i){
-        //         std::cout << Dealer[i] << "\t";
-        // }
     }
     std::cout << std::endl << "Hand value: " << player_value << std::endl;
     std::cout << "Dealer value: " << dealer_value << std::endl;
     std::cout << std::endl;
     game_history();
-
-    // std::string play_choice;
-    // to_lower(play_choice);
-    // std::cout << "The winner is: " << winner() << std::endl;
-    // std::cout << "Would you like to play again? (yes/no) ";
-    // std::cin >> play_choice;
-    // if (play_choice == "yes"){
-    //     play_again == true;
-    // }
-    // if (play_choice == "no"){
-    //     play_again = false;
-    // }
 }
-
 
 int main(){
     Blackjack Game;
