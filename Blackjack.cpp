@@ -190,9 +190,3 @@ void Blackjack::play(){
     std::cout << std::endl;
     game_history();
 }
-
-int main(){
-    Blackjack Game;
-    Game.play();
-    return 0;
-}
