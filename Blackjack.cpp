@@ -5,8 +5,8 @@
 Blackjack::Blackjack(){
     position = 0;
     dealer_value = 0;
-    player_value = 0;
-    player_ace = 0;
+    user_value = 0;
+    user_ace = 0;
     dealer_ace = 0;
     full = false;
     win = 0;
@@ -43,7 +43,7 @@ void Blackjack::shuffle(){
 
 // Draws a card from the top of the deck using FIFO/ a queue
 std::string Blackjack::Draw_Card(){
-    player_card = Deck[position];
+    std::string player_card = Deck[position];
     position++;
     return player_card;
 }
@@ -74,24 +74,24 @@ void Blackjack::Hand_Value(std::vector<std::string> player_deck, int &player_val
 
 int Blackjack::winner(){
 
-    if ((player_value > dealer_value) && player_value < 22 && full){
+    if ((user_value > dealer_value) && user_value < 22 && full){
         return 1;
     }
-    if (player_value == 21 && Player.size() == 2){
+    if (user_value == 21 && User.size() == 2){
         std::cout << "Blackjack" << std::endl;
         return 1;
     }
-    if (dealer_value > 21 || player_value == 21){
+    if (dealer_value > 21 || user_value == 21){
         return 1;
     }
     if (dealer_value == 21 && Dealer.size() == 2){
         std::cout << "The dealer got a blackjack!" << std::endl;
         return 2;
     }
-    if ((dealer_value > player_value) && dealer_value < 22 && full){
+    if ((dealer_value > user_value) && dealer_value < 22 && full){
         return 2;
     }
-    if (player_value > 21 || dealer_value == 21){
+    if (user_value > 21 || dealer_value == 21){
         return 2;
     }
     return 0;
@@ -150,19 +150,19 @@ void Blackjack::play(){
     bool play_again = true;
 
     for (int i = 0; i < 2; i++){
-        Player.push_back(Draw_Card());
+        User.push_back(Draw_Card());
         Dealer.push_back(Draw_Card());
     }
-    Hand_Value(Player, player_value, player_ace);
+    Hand_Value(User, user_value, user_ace);
     Hand_Value(Dealer, dealer_value, dealer_ace);
     bool stand = false;
     while (!stand && !gameover()){
         std::cout << "Your hand: ";
-        for (int i = 0; i < Player.size(); ++i){
-            std::cout << Player[i] << std::setw(2) << "";
+        for (int i = 0; i < User.size(); ++i){
+            std::cout << User[i] << std::setw(2) << "";
         }
 
-        std::cout << std::endl << "Hand value: " << player_value << std::endl;
+        std::cout << std::endl << "Hand value: " << user_value << std::endl;
 
         std::string choice;
         std::cout << std::endl << "Dealer's card: " << Dealer[0];
@@ -170,20 +170,20 @@ void Blackjack::play(){
         std::cin >> choice;
         to_lower(choice);
         if (choice == "hit"){
-            Player.push_back(Draw_Card());
-            Hand_Value(Player, player_value, player_ace);
+            User.push_back(Draw_Card());
+            Hand_Value(User, user_value, user_ace);
         }
         if (choice == "stand"){
             stand = true;
         }
     }
-    if (player_value < 21){//dealer should not draw any cards if the player gets a blackjack or bust
+    if (user_value < 21){//dealer should not draw any cards if the player gets a blackjack or bust
         while (dealer_value <= 16){ // dealer hits for 16 and below and stands on 17 or above
             Dealer.push_back(Draw_Card());
             Hand_Value(Dealer, dealer_value, dealer_ace);
         }
     }
-    std::cout << std::endl << "Hand value: " << player_value << std::endl;
+    std::cout << std::endl << "Hand value: " << user_value << std::endl;
     std::cout << "Dealer value: " << dealer_value << std::endl;
     std::cout << std::endl;
     game_history();

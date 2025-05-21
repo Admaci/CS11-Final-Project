@@ -32,9 +32,9 @@ class Blackjack {
     private:
         int value;
         int position;
-        int player_value;
+        int user_value;
         int dealer_value;
-        int player_ace;
+        int user_ace;
         int dealer_ace;
         int win;
         int loss;
@@ -42,11 +42,10 @@ class Blackjack {
         bool full;
         bool has_ace;
 
-        std::string player_card;
         std::string result;
         
         std::vector<std::string> Deck;
-        std::vector<std::string> Player;
+        std::vector<std::string> User;
         std::vector<std::string> Dealer;
         std::vector<std::string> rank = {"A", "K", "Q", "J", "T",
         "9", "8", "7", "6", "5", "4", "3", "2"};
