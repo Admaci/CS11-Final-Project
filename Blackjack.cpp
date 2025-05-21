@@ -3,8 +3,6 @@
 
 // initializes variables
 Blackjack::Blackjack(){
-    value = 0;
-    has_ace = false;
     position = 0;
     dealer_value = 0;
     player_value = 0;

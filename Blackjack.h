@@ -15,12 +15,10 @@ class Blackjack {
 
         void play();
         void Create_Deck();
-        void Cards();
         void shuffle();
         void game_history();
+        void Hand_Value(std::vector<std::string> player_deck, int &player_value, int ace_count);
 
-        bool Hit();
-        bool Stand();
         bool gameover();
 
         int Get_Value(std::string player_card, int &ace_count);
@@ -28,7 +26,7 @@ class Blackjack {
 
         std::string Draw_Card();
         std::string to_lower(std::string &input);
-        void Hand_Value(std::vector<std::string> player_deck, int &player_value, int ace_count);
+
 
 
     private:
@@ -50,9 +48,9 @@ class Blackjack {
         std::vector<std::string> Deck;
         std::vector<std::string> Player;
         std::vector<std::string> Dealer;
-        const std::vector<std::string> rank = {"A", "K", "Q", "J", "T",
+        std::vector<std::string> rank = {"A", "K", "Q", "J", "T",
         "9", "8", "7", "6", "5", "4", "3", "2"};
-        const std::vector<std::string> suit = {"S", "C", "H", "D"};
+        std::vector<std::string> suit = {"S", "C", "H", "D"};
 
 };
 
