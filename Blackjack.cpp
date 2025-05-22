@@ -127,15 +127,7 @@ void Blackjack::game_history(){
 
     int result = winner();
     if (result == 1){win++;}
-    if (result == 2){win++;}
-    while (fin >> win >> loss){
-        if (winner() == 1){
-            win++;
-        }
-        if (winner() == 2){
-            loss++;
-        }
-    }
+    if (result == 2){loss++;}
     std::cout << "Win / Loss = " << win << " / " << loss << std::endl;
     fin.close();
     std::ofstream fout("Game_History.txt");
@@ -181,6 +173,7 @@ void Blackjack::play(){
             Hand_Value(Dealer, dealer_value, dealer_ace);
         }
     }
+    full = true;
     std::cout << std::endl << "Hand value: " << user_value << std::endl;
     std::cout << "Dealer value: " << dealer_value << std::endl;
     std::cout << std::endl;
