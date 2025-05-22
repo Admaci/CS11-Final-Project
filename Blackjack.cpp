@@ -147,8 +147,6 @@ void Blackjack::game_history(){
 void Blackjack::play(){
     Create_Deck();
     shuffle();
-    bool play_again = true;
-
     for (int i = 0; i < 2; i++){
         User.push_back(Draw_Card());
         Dealer.push_back(Draw_Card());
